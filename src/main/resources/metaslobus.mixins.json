@@ -1,0 +1,9 @@
+{
+	"required": true,
+	"package": "com.serverboss.metaslobus.mixin",
+	"compatibilityLevel": "JAVA_16",
+	"minVersion": "0.8",
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

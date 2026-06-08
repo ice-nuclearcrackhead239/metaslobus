@@ -1,0 +1,41 @@
+plugins {
+	id 'dev.architectury.loom' version '1.11-SNAPSHOT'
+}
+
+base.archivesName = project.mod_id
+version = project.mod_version
+group = project.mod_group
+
+loom {
+	silentMojangMappingsLicense()
+	forge {
+		mixinConfig 'metaslobus.mixins.json'
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	minecraft "net.minecraft:minecraft:$minecraft_version"
+	mappings loom.officialMojangMappings()
+	forge "net.minecraftforge:forge:$forge_version"
+}
+
+processResources {
+	inputs.property 'version', project.version
+
+	filesMatching('META-INF/mods.toml') {
+		expand version: inputs.properties.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 16
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_16
+	targetCompatibility = JavaVersion.VERSION_16
+}
