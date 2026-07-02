@@ -11,9 +11,16 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(Metaslobus.MOD_ID)
 public final class Metaslobus {
 
-    public static final String MOD_ID = "metaslobus";
+	public static final String MOD_ID = "metaslobus";
 
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+	public static ResourceLocation of(String name) {
+		return new ResourceLocation(MOD_ID, name);
+	}
+
+	@Mod.EventBusSubscriber(
+		bus = Mod.EventBusSubscriber.Bus.MOD,
+		value = Dist.CLIENT
+	)
 	public static class ClientEvents {
 
 		@SubscribeEvent
@@ -22,6 +29,7 @@ public final class Metaslobus {
 				new ResourceLocation(MOD_ID, "perspective_model"),
 				new PerspectiveModelLoader()
 			);
+			MetaslobusKeybinds.register();
 			System.out.println("HOW MUCH");
 			System.out.println("LONGER NOW...?");
 			System.out.println("MY");
@@ -29,5 +37,4 @@ public final class Metaslobus {
 		}
 
 	}
-
 }
