@@ -8,6 +8,7 @@
 		"HumanoidArmorLayerMixin",
 		"HumanoidModelMixin"
 	],
+	"refmap": "mixins.metaslobus.refmap.json",
 	"injectors": {
 		"defaultRequire": 1
 	}
