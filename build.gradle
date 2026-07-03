@@ -22,6 +22,10 @@ legacyForge {
 	}
 }
 
+dependencies {
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
 mixin {
 	add sourceSets.main, "mixins.${mod_id}.refmap.json"
 	config "${mod_id}.mixins.json"
