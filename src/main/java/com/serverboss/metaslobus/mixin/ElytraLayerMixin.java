@@ -5,8 +5,6 @@ import net.minecraft.client.renderer.entity.layers.ElytraLayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,11 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(ElytraLayer.class)
-public class ElytraLayerMixin<T extends LivingEntity> {
+public abstract class ElytraLayerMixin<T extends LivingEntity, M> {
 
 	@Unique private static final List<ResourceLocation> CMD_ELYTRA_CACHE = new ArrayList<>();
 
-	@Inject(method = "getElytraTexture", at = @At("RETURN"), cancellable = true, remap = false)
+	@Inject(
+		method = "getElytraTexture(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/resources/ResourceLocation;",
+		at = @At("RETURN"),
+		cancellable = true,
+		remap = false
+	)
 	private void getCmdElytraTexture(ItemStack stack, T entity, CallbackInfoReturnable<ResourceLocation> cir) {
 		int cmd = readCustomModelData(stack);
 		if (cmd < 0) return;
