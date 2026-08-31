@@ -6,11 +6,11 @@
 	"client": [
 		"ClientPacketListenerMixin",
 		"CustomHeadLayerMixin",
+		"ElytraLayerMixin",
 		"HumanoidArmorLayerMixin",
-		"HumanoidModelMixin",
-		"TitleScreenMixin"
+		"HumanoidModelMixin"
 	],
-	"refmap": "mixins.metaslobus.refmap.json",
+	"refmap": "metaslobus.refmap.json",
 	"injectors": {
 		"defaultRequire": 1
 	}
