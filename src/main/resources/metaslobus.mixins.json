@@ -5,6 +5,7 @@
 	"minVersion": "0.8",
 	"client": [
 		"ClientPacketListenerMixin",
+		"CopeMixin",
 		"CustomHeadLayerMixin",
 		"ElytraLayerMixin",
 		"HumanoidArmorLayerMixin",
@@ -13,5 +14,8 @@
 	"refmap": "metaslobus.refmap.json",
 	"injectors": {
 		"defaultRequire": 1
-	}
+	},
+	"mixins": [
+		"PlayerMixin"
+	]
 }
