@@ -10,7 +10,7 @@ public class MetaslobusPackets {
 
 	public static void register() {
 		ServerbossPacketManager.register(new ResourceLocation("svbcr", "shader"), MetaslobusPackets::setShader);
-		ServerbossPacketManager.register(new ResourceLocation("svbcr", "scope"), MetaslobusPackets::setScope);
+		ServerbossPacketManager.register(new ResourceLocation("svbcr", "sniper"), MetaslobusPackets::setScope);
 	}
 
 	public static void setShader(FriendlyByteBuf buf) throws IndexOutOfBoundsException {
