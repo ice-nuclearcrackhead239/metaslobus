@@ -32,16 +32,14 @@ public class PerspectiveModelLoader implements IModelLoader<PerspectiveModelGeom
 	public PerspectiveModelGeometry read(JsonDeserializationContext ctx, JsonObject json) {
 		Map<ItemTransforms.TransformType, ResourceLocation> models = new EnumMap<>(ItemTransforms.TransformType.class);
 
-		for (var entry : KEY_MAP.entrySet()) {
-			if (json.has(entry.getKey())) {
-				models.put(entry.getValue(), new ResourceLocation(json.get(entry.getKey()).getAsString()));
+		KEY_MAP.forEach((key, type) -> {
+			if (json.has(key)) {
+				models.put(type, new ResourceLocation(json.get(key).getAsString()));
 			}
-		}
+		});
 
 		ResourceLocation defaultModel = null;
-		if (json.has("default")) {
-			defaultModel = new ResourceLocation(json.get("default").getAsString());
-		}
+		if (json.has("default")) defaultModel = new ResourceLocation(json.get("default").getAsString());
 
 		if (models.isEmpty() && defaultModel == null) {
 			throw new JsonParseException("perspective_model requires at least one perspective key or a default");

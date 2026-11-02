@@ -11,17 +11,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.geometry.IModelGeometry;
 
-public class PerspectiveModelGeometry
-	implements IModelGeometry<PerspectiveModelGeometry>
-{
+public class PerspectiveModelGeometry implements IModelGeometry<PerspectiveModelGeometry> {
 
-	private final Map<ItemTransforms.TransformType, ResourceLocation> models;
+	protected final Map<ItemTransforms.TransformType, ResourceLocation> models;
 
-	private final ResourceLocation defaultModel;
+	protected final ResourceLocation defaultModel;
 
 	public PerspectiveModelGeometry(
-		Map<ItemTransforms.TransformType, ResourceLocation> models,
-		ResourceLocation defaultModel
+		Map<ItemTransforms.TransformType, ResourceLocation> models, ResourceLocation defaultModel
 	) {
 		this.models = models;
 		this.defaultModel = defaultModel;
@@ -29,34 +26,18 @@ public class PerspectiveModelGeometry
 
 	@Override
 	public BakedModel bake(
-		IModelConfiguration owner,
-		ModelBakery bakery,
-		Function<Material, TextureAtlasSprite> spriteGetter,
-		ModelState modelTransform,
-		ItemOverrides overrides,
-		ResourceLocation modelLocation
+		IModelConfiguration owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter,
+		ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation
 	) {
-		Map<ItemTransforms.TransformType, BakedModel> baked = new EnumMap<>(
-			ItemTransforms.TransformType.class
-		);
-		for (var entry : models.entrySet()) {
-			UnbakedModel unbaked = bakery.getModel(entry.getValue());
-			baked.put(
-				entry.getKey(),
-				unbaked.bake(
-					bakery,
-					spriteGetter,
-					modelTransform,
-					entry.getValue()
-				)
-			);
-		}
+		Map<ItemTransforms.TransformType, BakedModel> baked = new EnumMap<>(ItemTransforms.TransformType.class);
+		this.models.forEach((type, transform) -> {
+			UnbakedModel unbaked = bakery.getModel(transform);
+			baked.put(type, unbaked.bake(bakery, spriteGetter, modelTransform, transform));
+		});
 
 		BakedModel bakedDefault;
-		if (defaultModel != null) {
-			bakedDefault = bakery
-				.getModel(defaultModel)
-				.bake(bakery, spriteGetter, modelTransform, defaultModel);
+		if (this.defaultModel != null) {
+			bakedDefault = bakery.getModel(this.defaultModel).bake(bakery, spriteGetter, modelTransform, this.defaultModel);
 		} else {
 			bakedDefault = pickDefault(baked);
 		}
@@ -66,38 +47,27 @@ public class PerspectiveModelGeometry
 
 	@Override
 	public Collection<Material> getTextures(
-		IModelConfiguration iModelConfiguration,
-		Function<ResourceLocation, UnbakedModel> function,
-		Set<Pair<String, String>> set
+		IModelConfiguration iModelConfiguration, Function<ResourceLocation, UnbakedModel> function, Set<Pair<String, String>> set
 	) {
 		Set<Material> textures = new HashSet<>();
 
-		for (ResourceLocation modelLocation : models.values()) {
-			UnbakedModel unbaked = function.apply(modelLocation);
-			if (unbaked != null) {
-				textures.addAll(unbaked.getMaterials(function, set));
-			}
-		}
+		this.models.values().forEach(location -> {
+			UnbakedModel unbaked = function.apply(location);
+			if (unbaked != null) textures.addAll(unbaked.getMaterials(function, set));
+		});
 
-		if (defaultModel != null && !models.containsValue(defaultModel)) {
-			UnbakedModel unbaked = function.apply(defaultModel);
-			if (unbaked != null) {
-				textures.addAll(unbaked.getMaterials(function, set));
-			}
+		if (this.defaultModel != null && !this.models.containsValue(this.defaultModel)) {
+			UnbakedModel unbaked = function.apply(this.defaultModel);
+			if (unbaked != null) textures.addAll(unbaked.getMaterials(function, set));
 		}
 
 		return textures;
 	}
 
-	private static BakedModel pickDefault(
-		Map<ItemTransforms.TransformType, BakedModel> models
-	) {
-		return models.getOrDefault(
-			ItemTransforms.TransformType.GUI,
-			models.getOrDefault(
-				ItemTransforms.TransformType.GROUND,
-				models.values().iterator().next()
-			)
+	public static BakedModel pickDefault(Map<ItemTransforms.TransformType, BakedModel> models) {
+		return models.getOrDefault(ItemTransforms.TransformType.GUI,
+			models.getOrDefault(ItemTransforms.TransformType.GROUND, models.values().iterator().next())
 		);
 	}
+
 }

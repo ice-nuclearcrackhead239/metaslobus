@@ -20,17 +20,15 @@ public class PerspectiveBakedModel extends BakedModelWrapper<BakedModel> {
 
 	@Override
 	public BakedModel handlePerspective(ItemTransforms.TransformType type, PoseStack poseStack) {
-		return resolve(type).handlePerspective(type, poseStack);
+		return this.resolve(type).handlePerspective(type, poseStack);
 	}
 
 	private BakedModel resolve(ItemTransforms.TransformType type) {
-		if (models.containsKey(type)) return models.get(type);
+		if (this.models.containsKey(type)) return this.models.get(type);
+
 		return switch (type) {
-			case FIRST_PERSON_LEFT_HAND -> models.getOrDefault(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, fallback);
-			case FIRST_PERSON_RIGHT_HAND -> models.getOrDefault(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND, fallback);
-			case THIRD_PERSON_LEFT_HAND -> models.getOrDefault(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, fallback);
-			case THIRD_PERSON_RIGHT_HAND -> models.getOrDefault(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, fallback);
-			default -> fallback;
+			case THIRD_PERSON_RIGHT_HAND, THIRD_PERSON_LEFT_HAND, FIRST_PERSON_RIGHT_HAND, FIRST_PERSON_LEFT_HAND -> this.models.getOrDefault(type, fallback);
+			default -> this.fallback;
 		};
 	}
 
