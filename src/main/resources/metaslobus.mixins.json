@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"package": "com.serverboss.metaslobus.mixin",
-	"compatibilityLevel": "JAVA_16",
+	"compatibilityLevel": "JAVA_17",
 	"minVersion": "0.8",
 	"client": [
 		"ClientPacketListenerMixin",
@@ -12,12 +12,12 @@
 		"HumanoidModelMixin",
 		"ThrownItemRendererMixin"
 	],
-	"refmap": "metaslobus.refmap.json",
-	"injectors": {
-		"defaultRequire": 1
-	},
 	"mixins": [
 		"FPMixin",
 		"PlayerMixin"
-	]
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"refmap": "metaslobus.refmap.json"
 }
