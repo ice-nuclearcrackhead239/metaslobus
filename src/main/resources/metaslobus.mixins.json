@@ -9,7 +9,8 @@
 		"CustomHeadLayerMixin",
 		"ElytraLayerMixin",
 		"HumanoidArmorLayerMixin",
-		"HumanoidModelMixin"
+		"HumanoidModelMixin",
+		"ThrownItemRendererMixin"
 	],
 	"refmap": "metaslobus.refmap.json",
 	"injectors": {
